@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">YourPasteBins</string>
+
+    <string name="add_button">ADD</string>
+    <string name="title">Your PasteBins</string>
+
+    <string name="add_paste">Add Paste</string>
+    <string name="edit_paste">Edit Paste</string>
+    <string name="your_paste">Your Paste:</string>
+    <string name="save_data">Save</string>
+    <string name="api_dev_key">eb5595436af85d6e08cf081e61cf8222</string>
+</resources>
