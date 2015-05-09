@@ -33,6 +33,7 @@
         android:layout_toEndOf="@+id/linearLayout"
         android:textStyle="bold"
         android:textColor="#ff000000"
+        android:ellipsize="end"
         android:paddingLeft="10dp"
         android:paddingTop="3dp" />
 
@@ -49,15 +50,5 @@
         android:layout_toRightOf="@+id/linearLayout"
         android:layout_toEndOf="@+id/linearLayout"
         android:textColor="#ffb0b0b0" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/pasteID"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:visibility="invisible" />
 
 </RelativeLayout>

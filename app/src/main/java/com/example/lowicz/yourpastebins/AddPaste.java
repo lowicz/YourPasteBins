@@ -100,13 +100,12 @@ public class AddPaste extends Activity {
                 }
             }
 
-            HashMap<String, String> qvalues = new HashMap<>();
+            Paste qvalues = new Paste();
 
-            qvalues.put("url", text);
-            qvalues.put("paste_text", PasteText.getText().toString());
+            qvalues.setUrl(text);
+            qvalues.setPaste_text(PasteText.getText().toString());
 
-            database.insertPaste(qvalues);
-
+            qvalues.setPasteID(database.insertPaste(qvalues));
             return true;
         }
 

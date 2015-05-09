@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    android:background="#613498DB">
+    android:background="#ffffffff">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -51,6 +51,7 @@
         android:id="@+id/listView"
         android:divider="@android:color/transparent"
         android:dividerHeight="10dp"
-        android:background="#613498DB" />
+        android:background="#1038b1f9"
+        android:paddingTop="10dp" />
 
 </LinearLayout>

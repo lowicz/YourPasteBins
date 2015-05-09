@@ -24,23 +24,18 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ArrayList<HashMap<String, String>> pasteList = database.getAll();
+        final ArrayList<Paste> pasteList = database.getAll();
 
         if (pasteList.size()!=0) {
             ListView listview = (ListView) findViewById(R.id.listView);
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    pasteID = (TextView) view.findViewById(R.id.pasteID);
-                   // Paste p = pasteList.get(position); nowa klasa (kontener danych) - zamiast do hashmap
 
                 }
             });
 
-            ListAdapter adapter = new SimpleAdapter(MainActivity.this,
-                    pasteList, R.layout.one_paste,
-                    new String[] {"pasteID", "url", "paste_text"},
-                    new int[] {R.id.pasteID, R.id.url, R.id.paste_text3});
+            ListAdapter adapter = new PasteAdapter(MainActivity.this, pasteList);
             listview.setAdapter(adapter);
 
         }
