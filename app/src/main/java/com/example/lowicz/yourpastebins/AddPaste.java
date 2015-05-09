@@ -43,6 +43,8 @@ public class AddPaste extends Activity {
         setContentView(R.layout.add_paste);
 
         PasteText = (EditText) findViewById(R.id.paste_text);
+
+
     }
 
     public void sendPaste(View v) {
@@ -119,6 +121,7 @@ public class AddPaste extends Activity {
                 Toast.makeText(AddPaste.this, "ERROR", Toast.LENGTH_LONG).show();
             }
             dialog.dismiss();
+            finish();
         }
     }
 }

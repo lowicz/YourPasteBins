@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -23,7 +24,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ArrayList<HashMap<String, String>> pasteList = database.getAll();
+        final ArrayList<HashMap<String, String>> pasteList = database.getAll();
 
         if (pasteList.size()!=0) {
             ListView listview = (ListView) findViewById(R.id.listView);
@@ -31,6 +32,7 @@ public class MainActivity extends Activity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     pasteID = (TextView) view.findViewById(R.id.pasteID);
+                   // Paste p = pasteList.get(position); nowa klasa (kontener danych) - zamiast do hashmap
 
                 }
             });
@@ -43,10 +45,15 @@ public class MainActivity extends Activity {
 
         }
 
-    }
+        ImageButton button = (ImageButton) findViewById(R.id.add_paste_button);
 
-    public void showAddPaste(View v) {
-        Intent intent = new Intent(this, AddPaste.class);
-        startActivity(intent);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddPaste.class);
+                startActivity(intent);
+            }
+        });
+
     }
 }
