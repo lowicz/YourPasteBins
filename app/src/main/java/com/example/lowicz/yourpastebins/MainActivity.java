@@ -6,39 +6,49 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
+import android.widget.ViewAnimator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class MainActivity extends Activity {
 
     Database database = new Database(this);
-    TextView pasteID;
+    ArrayList<Paste> pasteList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ArrayList<Paste> pasteList = database.getAll();
+        pasteList = database.getAll();
 
         if (pasteList.size()!=0) {
             ListView listview = (ListView) findViewById(R.id.listView);
+            final PasteAdapter adapter = new PasteAdapter(MainActivity.this, pasteList);
+            listview.setAdapter(adapter);
+
+
             listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                    Paste paste = (Paste) adapter.getItem(position);
+                    Intent intent = new Intent(MainActivity.this, EditPaste.class);
+                    intent.putExtra("message", paste);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    startActivity(intent);
                 }
             });
 
-            ListAdapter adapter = new PasteAdapter(MainActivity.this, pasteList);
-            listview.setAdapter(adapter);
+            listview.invalidateViews();
 
+
+        } else {
+            ViewAnimator va = (ViewAnimator) findViewById(R.id.va);
+            va.setDisplayedChild(1);
         }
+
 
         ImageButton button = (ImageButton) findViewById(R.id.add_paste_button);
 
@@ -46,6 +56,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, AddPaste.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(intent);
             }
         });

@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by lowicz on 03.05.15.
@@ -55,8 +54,7 @@ public class Database extends SQLiteOpenHelper {
 
         values.put("url", qvalues.getUrl());
         values.put("paste_text", qvalues.getPaste_text());
-
-        return db.update("pastes", values, "pasteID" + " = ?", new String[] {qvalues.getPasteID()});
+        return db.update("pastes", values, "pasteID" + " = ?", new String[]{qvalues.getPasteID()});
     }
 
     public void deletePaste(String id) {
@@ -70,7 +68,7 @@ public class Database extends SQLiteOpenHelper {
     public ArrayList<Paste> getAll() {
         ArrayList<Paste> pastesArrayList;
 
-        pastesArrayList = new ArrayList<Paste>();
+        pastesArrayList = new ArrayList<>();
 
         String query = "SELECT * FROM pastes";
 
@@ -89,7 +87,7 @@ public class Database extends SQLiteOpenHelper {
                 pastesArrayList.add(pasteMap);
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         return pastesArrayList;
     }
 }

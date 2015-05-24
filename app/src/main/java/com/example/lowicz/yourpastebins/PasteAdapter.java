@@ -7,19 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by s391382 on 2015-05-09.
  */
 public class PasteAdapter extends BaseAdapter {
-    List<Paste> items;
     private final Context context;
-
-    public interface OnRemovedListener {
-        void onRemoved();
-    }
+    List<Paste> items;
 
     public PasteAdapter(Context context, List<Paste> items) {
         this.context = context;
@@ -56,7 +51,7 @@ public class PasteAdapter extends BaseAdapter {
     }
 
     private void bindDataToView(Paste item, View view) {
-
+        this.notifyDataSetChanged();
         TextView url = (TextView) view.findViewById(R.id.url);
         if (url != null) {
             url.setText(item.getUrl());

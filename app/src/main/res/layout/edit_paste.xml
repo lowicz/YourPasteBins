@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical"
-    tools:context=".MainActivity"
-    android:background="#ffffff">
+    tools:context=".MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,70 +12,87 @@
         android:background="#3498db">
 
         <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:id="@+id/imageView2"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:src="@drawable/logo" />
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/edit_paste"
-            android:id="@+id/textView2"
             android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/delete_button"
             android:layout_toRightOf="@+id/imageView2"
-            android:textStyle="bold"
-            android:textColor="#ffffffff"
             android:layout_toStartOf="@+id/delete_button"
-            android:layout_toLeftOf="@+id/delete_button" />
+            android:text="@string/edit_paste"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#ffffffff"
+            android:textStyle="bold" />
 
         <ImageButton
+            android:id="@+id/delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/delete_button"
-            android:padding="15dp"
-            android:src="@drawable/delete"
-            android:background="#00000000"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/send_paste_button2"
-            android:layout_toStartOf="@+id/send_paste_button2" />
+            android:layout_toStartOf="@+id/send_paste_button2"
+            android:background="#00000000"
+            android:padding="15dp"
+            android:src="@drawable/delete" />
 
         <ImageButton
+            android:id="@+id/send_paste_button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/send_paste_button2"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/checkmark"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:background="#00000000"
-            android:padding="15dp" />
+            android:padding="15dp"
+            android:src="@drawable/checkmark" />
 
     </RelativeLayout>
 
-    <EditText
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:id="@+id/pastebin_url"
-        android:text="http://pastebin.com/jYzh3cpK"
-        android:editable="false" />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/pastebin_url"
+            android:layout_width="298dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:editable="false"
+            android:paddingLeft="15dp"
+            android:text="http://pastebin.com/jYzh3cpK" />
+
+        <Button
+            android:id="@+id/copy_button"
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_gravity="right"
+            android:text="Copy"
+            android:textAlignment="center"
+            android:textSize="13sp" />
+    </LinearLayout>
 
     <EditText
+        android:id="@+id/paste_text2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:inputType="textMultiLine"
         android:ems="10"
-        android:id="@+id/paste_text2"
-        android:hint="Your Paste..."
-        android:typeface="monospace"
         android:gravity="start|top"
+        android:hint="Your Paste..."
+        android:inputType="textMultiLine"
         android:isScrollContainer="true"
         android:paddingLeft="15dp"
-        android:paddingTop="15dp"/>
+        android:paddingTop="15dp"
+        android:typeface="monospace" />
 
 </LinearLayout>

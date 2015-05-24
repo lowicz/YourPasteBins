@@ -1,10 +1,13 @@
 package com.example.lowicz.yourpastebins;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,7 +27,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 /**
@@ -37,11 +39,15 @@ public class AddPaste extends Activity {
     EditText PasteText;
     Database database = new Database(this);
 
+    private boolean checkResponse(String response) {
+        String regex = ".*http.*";
+        return response.matches(regex);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_paste);
-
         PasteText = (EditText) findViewById(R.id.paste_text);
 
 
@@ -49,7 +55,7 @@ public class AddPaste extends Activity {
 
     public void sendPaste(View v) {
         InsertData task = new InsertData();
-        task.execute(new String[]{"http://pastebin.com/api/api_post.php"});
+        task.execute("http://pastebin.com/api/api_post.php");
     }
 
     private class InsertData extends AsyncTask<String, Void, Boolean> {
@@ -65,7 +71,6 @@ public class AddPaste extends Activity {
         @Override
         protected Boolean doInBackground(String... params) {
             InputStream inputStream;
-
             for(String url : params) {
                 try {
                     ArrayList<NameValuePair> pairs = new ArrayList<>();
@@ -100,27 +105,60 @@ public class AddPaste extends Activity {
                 }
             }
 
-            Paste qvalues = new Paste();
+            if (checkResponse(text)) {
+                Paste qvalues = new Paste();
 
-            qvalues.setUrl(text);
-            qvalues.setPaste_text(PasteText.getText().toString());
+                qvalues.setUrl(text);
+                qvalues.setPaste_text(PasteText.getText().toString());
 
-            qvalues.setPasteID(database.insertPaste(qvalues));
+                qvalues.setPasteID(database.insertPaste(qvalues));
+            } else {
+                text = "ERROR: " + text;
+                return false;
+            }
+
+
             return true;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
             if (result){
-                Intent intent = new Intent(getApplication(), MainActivity.class);
-                startActivity(intent);
-                Toast.makeText(AddPaste.this, text, Toast.LENGTH_LONG).show();
+
+                AlertDialog.Builder adialog = new AlertDialog.Builder(AddPaste.this);
+                adialog.setTitle("Paste added");
+                adialog.setMessage(text);
+                adialog.setCancelable(false);
+
+                adialog.setPositiveButton("Copy URL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        clipboard.setText(text);
+
+                        Intent intent = new Intent(AddPaste.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        Toast.makeText(AddPaste.this, "Paste added.", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                adialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(AddPaste.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        Toast.makeText(AddPaste.this, "Paste added.", Toast.LENGTH_LONG).show();
+                    }
+                });
+                adialog.show();
             }
             else {
-                Toast.makeText(AddPaste.this, "ERROR", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddPaste.this, text, Toast.LENGTH_LONG).show();
             }
             dialog.dismiss();
-            finish();
         }
     }
 }
