@@ -3,7 +3,7 @@
 
     <string name="add_button">ADD</string>
     <string name="title">Your PasteBins</string>
-
+    <string name="facebook_app_id">1653632974866414</string>
     <string name="add_paste">Add Paste</string>
     <string name="edit_paste">Edit Paste</string>
     <string name="your_paste">Your Paste:</string>

@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -25,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/delete_button"
             android:layout_toRightOf="@+id/imageView2"
             android:layout_toStartOf="@+id/delete_button"
             android:text="@string/edit_paste"
@@ -37,11 +36,11 @@
             android:id="@+id/delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/send_paste_button2"
-            android:layout_toStartOf="@+id/send_paste_button2"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/share_button"
+            android:layout_toStartOf="@+id/share_button"
             android:background="#00000000"
-            android:padding="15dp"
+            android:padding="5dp"
             android:src="@drawable/delete" />
 
         <ImageButton
@@ -52,8 +51,21 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="#00000000"
-            android:padding="15dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
             android:src="@drawable/checkmark" />
+
+        <ImageButton
+            android:id="@+id/share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/send_paste_button2"
+            android:layout_toStartOf="@+id/send_paste_button2"
+            android:background="#00000000"
+            android:padding="5dp"
+            android:src="@drawable/share" />
 
     </RelativeLayout>
 
@@ -70,7 +82,7 @@
             android:layout_weight="1"
             android:editable="false"
             android:paddingLeft="15dp"
-            android:text="http://pastebin.com/jYzh3cpK" />
+            android:text="" />
 
         <Button
             android:id="@+id/copy_button"

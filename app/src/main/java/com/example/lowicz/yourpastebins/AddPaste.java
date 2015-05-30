@@ -5,12 +5,17 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -48,6 +53,7 @@ public class AddPaste extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_paste);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         PasteText = (EditText) findViewById(R.id.paste_text);
 
 
@@ -147,6 +153,22 @@ public class AddPaste extends Activity {
                 adialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(AddPaste.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        Toast.makeText(AddPaste.this, "Paste added.", Toast.LENGTH_LONG).show();
+                    }
+                });
+                final ShareLinkContent content = new ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse(text))
+                        .build();
+
+                adialog.setNeutralButton("Share", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ShareDialog sDialog = new ShareDialog(AddPaste.this);
+                        sDialog.show(content);
+
                         Intent intent = new Intent(AddPaste.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);

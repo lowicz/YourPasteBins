@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.ClipboardManager;
@@ -13,6 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -55,6 +60,7 @@ public class EditPaste extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_paste);
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         PasteText = (EditText) findViewById(R.id.paste_text2);
         PasteUrl = (EditText) findViewById(R.id.pastebin_url);
@@ -99,6 +105,19 @@ public class EditPaste extends Activity {
                 clipboard.setText(PasteUrl.getText());
 
                 Toast.makeText(EditPaste.this, "Copied.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        final ShareLinkContent content = new ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse(paste.getUrl()))
+                .build();
+
+        ImageButton ShareButton = (ImageButton) findViewById(R.id.share_button);
+        ShareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShareDialog sDialog = new ShareDialog(EditPaste.this);
+                sDialog.show(content);
             }
         });
     }
@@ -168,6 +187,9 @@ public class EditPaste extends Activity {
                 adialog.setTitle("Paste updated");
                 adialog.setMessage(text);
                 adialog.setCancelable(false);
+                final ShareLinkContent content = new ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse(paste.getUrl()))
+                        .build();
 
                 adialog.setPositiveButton("Copy URL", new DialogInterface.OnClickListener() {
                     @Override
@@ -183,6 +205,17 @@ public class EditPaste extends Activity {
                 adialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        closeMe();
+                        Toast.makeText(EditPaste.this, "Paste updated.", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+                adialog.setNeutralButton("Share", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ShareDialog sDialog = new ShareDialog(EditPaste.this);
+                        sDialog.show(content);
+
                         closeMe();
                         Toast.makeText(EditPaste.this, "Paste updated.", Toast.LENGTH_LONG).show();
                     }
