@@ -22,6 +22,7 @@ public class PasteAdapter extends BaseAdapter {
     }
 
     @Override
+
     public int getCount() {
         return items.size();
     }
