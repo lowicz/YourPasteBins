@@ -3,8 +3,11 @@ package com.example.lowicz.yourpastebins;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -44,6 +47,13 @@ public class AddPaste extends Activity {
     EditText PasteText;
     Database database = new Database(this);
 
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
     private boolean checkResponse(String response) {
         String regex = ".*http.*";
         return response.matches(regex);
@@ -60,8 +70,21 @@ public class AddPaste extends Activity {
     }
 
     public void sendPaste(View v) {
-        InsertData task = new InsertData();
-        task.execute("http://pastebin.com/api/api_post.php");
+        if (isOnline()) {
+            InsertData task = new InsertData();
+            task.execute("http://pastebin.com/api/api_post.php");
+        } else {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(AddPaste.this);
+            dialog.setTitle("Connection Problem");
+            dialog.setMessage("Check your internet connection.");
+            dialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            dialog.show();
+        }
     }
 
     private class InsertData extends AsyncTask<String, Void, Boolean> {
@@ -168,11 +191,6 @@ public class AddPaste extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         ShareDialog sDialog = new ShareDialog(AddPaste.this);
                         sDialog.show(content);
-
-                        Intent intent = new Intent(AddPaste.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        Toast.makeText(AddPaste.this, "Paste added.", Toast.LENGTH_LONG).show();
                     }
                 });
                 adialog.show();

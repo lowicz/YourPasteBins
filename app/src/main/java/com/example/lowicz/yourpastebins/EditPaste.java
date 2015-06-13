@@ -3,8 +3,11 @@ package com.example.lowicz.yourpastebins;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -45,6 +48,13 @@ public class EditPaste extends Activity {
     Database database = new Database(this);
     Paste paste;
 
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
     private void closeMe() {
         Intent intent = new Intent(EditPaste.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -79,6 +89,17 @@ public class EditPaste extends Activity {
 
                 if (paste.getPaste_text().equals(PasteText.getText().toString())) {
                     Toast.makeText(EditPaste.this, "You must change your paste...", Toast.LENGTH_SHORT).show();
+                } else if (!isOnline()) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(EditPaste.this);
+                    dialog.setTitle("Connection Problem");
+                    dialog.setMessage("Check your internet connection.");
+                    dialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    dialog.show();
                 } else {
                     paste.setPaste_text(PasteText.getText().toString());
                     InsertData task = new InsertData();
@@ -215,9 +236,6 @@ public class EditPaste extends Activity {
                     public void onClick(DialogInterface dialog, int which) {
                         ShareDialog sDialog = new ShareDialog(EditPaste.this);
                         sDialog.show(content);
-
-                        closeMe();
-                        Toast.makeText(EditPaste.this, "Paste updated.", Toast.LENGTH_LONG).show();
                     }
                 });
                 adialog.show();

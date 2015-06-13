@@ -18,6 +18,12 @@ public class MainActivity extends Activity {
     ArrayList<Paste> pasteList;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        this.onCreate(null);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -40,8 +46,7 @@ public class MainActivity extends Activity {
                     startActivity(intent);
                 }
             });
-
-            listview.invalidateViews();
+            adapter.notifyDataSetChanged();
 
 
         } else {
